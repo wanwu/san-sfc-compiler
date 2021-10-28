@@ -1,0 +1,10 @@
+src
+node_modules
+.DS_Store
+.git
+.gitignore
+.vscode
+test
+tsconfig.json
+.github/**
+typings

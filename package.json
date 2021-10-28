@@ -1,0 +1,66 @@
+{
+  "name": "san-sfc-compiler",
+  "version": "0.1.0",
+  "description": "Lower level utilities for compiling .san single file components",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wanwu/san-sfc-compiler.git"
+  },
+  "bugs": {
+    "url": "https://github.com/wanwu/san-sfc-compiler/issues"
+  },
+  "homepage": "https://github.com/wanwu/san-sfc-compiler#readme",
+  "keywords": [
+    "san",
+    "transformer",
+    "component",
+    "sfc"
+  ],
+  "author": "wangjinghao@baidu.com",
+  "license": "MIT",
+  "scripts": {
+    "lint": "prettier --write \"{src,test}/**/*.ts\"",
+    "clean": "rm -rf dist",
+    "build": "npm run clean && tsc",
+    "test": "jest"
+  },
+  "jest": {
+    "testURL": "http://localhost",
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    }
+  },
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.0.2",
+    "@types/node": "^16.11.6",
+    "jest": "^27.3.1",
+    "less": "^4.1.2",
+    "prettier": "^2.4.1",
+    "pug": "^3.0.2",
+    "san": "^3.10.10",
+    "sass": "^1.43.4",
+    "stylus": "^0.55.0",
+    "ts-jest": "^27.0.7",
+    "typescript": "^4.4.4"
+  },
+  "dependencies": {
+    "@types/lodash.mapvalues": "^4.6.6",
+    "consolidate": "^0.16.0",
+    "hash-sum": "^2.0.0",
+    "lodash.mapvalues": "^4.6.0",
+    "postcss": "^8.3.11",
+    "postcss-selector-parser": "^6.0.6",
+    "san-anode-utils": "^3.10.0",
+    "source-map": "^0.7.3"
+  }
+}
