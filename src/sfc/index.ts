@@ -3,8 +3,9 @@ import { parseComponent as _parseComponent, SFCBlockRaw } from './sfc-parser';
 import { equalsRecord } from './utils';
 
 // types
-export { parseHTML } from './html-parser';
 export { Attribute } from './sfc-parser';
+
+import { generateSourceMap } from '../sourcemap';
 
 export class SFCBlock {
   type!: string;
@@ -16,6 +17,7 @@ export class SFCBlock {
   src?: string;
   scoped?: true;
   module?: string | true;
+  map?: any;
 
   constructor(block: SFCBlockRaw) {
     Object.keys(block).forEach((_key) => {
@@ -63,12 +65,36 @@ export interface SFCDescriptor {
   customBlocks: SFCBlock[];
 }
 
-export function parseComponent(code: string): SFCDescriptor {
-  return mapValues(_parseComponent(code), (value, key) => {
+export interface ParseOptions {
+  source: string;
+  filename?: string;
+  sourceRoot?: string;
+  needMap?: boolean;
+}
+
+export function parseSFC(options: ParseOptions): SFCDescriptor {
+  const { source, filename = '', sourceRoot = '', needMap = true } = options;
+
+  const addMap = (block: SFCBlockRaw) => {
+    if (!block.src && needMap) {
+      block.map = generateSourceMap(
+        filename,
+        source,
+        block.content,
+        sourceRoot,
+        'line'
+      );
+    }
+    return block;
+  };
+
+  const output = mapValues(_parseComponent(source), (value) => {
     if (Array.isArray(value)) {
-      return value.map((v) => new SFCBlock(v));
+      return value.map((v) => new SFCBlock(v)).map((style) => addMap(style));
     } else {
-      return value && new SFCBlock(value);
+      return value && addMap(new SFCBlock(value));
     }
   }) as SFCDescriptor;
+
+  return output;
 }

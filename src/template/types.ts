@@ -1,19 +1,18 @@
+import { RawSourceMap } from 'src/sourcemap';
+
 export interface TemplateCompileOptions {
   source: string;
   filename: string;
-  parser: VueTemplateCompiler;
-  parserOptions?: VueTemplateCompilerOptions;
-  transformAssetUrls?: AssetURLOptions | boolean;
-  transformAssetUrlsOptions?: TransformAssetUrlsOptions;
+  id?: string;
+  scoped?: boolean;
+  transformAssetUrls?: boolean;
+  compileANode?: 'aNode' | 'aPack' | 'none';
   preprocessLang?: string;
   preprocessOptions?: any;
-  transpileOptions?: any;
-  compileANode?: boolean;
-  compileAPack?: boolean;
 }
 
 export interface TemplateCompileResult {
-  ast: Object | undefined;
+  map?: RawSourceMap | any;
   code: string;
   source: string;
 }

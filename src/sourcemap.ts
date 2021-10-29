@@ -17,7 +17,7 @@ export function generateSourceMap(
   filename: string,
   source: string,
   generated: string,
-  sourceRoot: string,
+  sourceRoot: string = '',
   pad?: 'line' | 'space'
 ): RawSourceMap {
   const map = new SourceMapGenerator({

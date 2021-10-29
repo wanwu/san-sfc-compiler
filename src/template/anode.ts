@@ -1,7 +1,7 @@
-import aNodeUtils from 'san-anode-utils';
+const aNodeUtils = require('san-anode-utils');
 
 export default function (
-  source?: string,
+  source: string,
   compileType?: 'aNode' | 'aPack' | 'none'
 ) {
   let result = source;

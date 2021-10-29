@@ -1,36 +1,15 @@
-const postcss = require('postcss');
-import { ProcessOptions, LazyResult } from 'postcss';
-import trimPlugin from './stylePlugins/trim';
-import scopedPlugin from './style/preprocess';
+import postcss, { ProcessOptions, LazyResult, Result } from 'postcss';
+
 import {
-  processors,
+  StyleCompileOptions,
+  StyleCompileResults,
+  AsyncStyleCompileOptions,
   StylePreprocessor,
   StylePreprocessorResults,
-} from './styleProcessors';
+} from './style/types';
 
-export interface StyleCompileOptions {
-  source: string;
-  filename: string;
-  id: string;
-  map?: any;
-  scoped?: boolean;
-  trim?: boolean;
-  preprocessLang?: string;
-  preprocessOptions?: any;
-  postcssOptions?: any;
-  postcssPlugins?: any[];
-}
-
-export interface AsyncStyleCompileOptions extends StyleCompileOptions {
-  isAsync?: boolean;
-}
-
-export interface StyleCompileResults {
-  code: string;
-  map: any | void;
-  rawResult: LazyResult | void;
-  errors: string[];
-}
+import { processors } from './style/preprocess';
+import scopedPlugin from './style/scoped';
 
 export function compileStyle(
   options: StyleCompileOptions
@@ -46,12 +25,11 @@ export function compileStyleAsync(
 
 export function doCompileStyle(
   options: AsyncStyleCompileOptions
-): StyleCompileResults {
+): StyleCompileResults | any {
   const {
     filename,
-    id,
-    scoped = true,
-    trim = true,
+    id = '',
+    scoped = false,
     preprocessLang,
     postcssOptions,
     postcssPlugins,
@@ -62,9 +40,7 @@ export function doCompileStyle(
   const source = preProcessedSource ? preProcessedSource.code : options.source;
 
   const plugins = (postcssPlugins || []).slice();
-  if (trim) {
-    plugins.push(trimPlugin());
-  }
+
   if (scoped) {
     plugins.push(scopedPlugin(id));
   }
@@ -94,8 +70,9 @@ export function doCompileStyle(
     if (options.isAsync) {
       return result
         .then(
-          (result: LazyResult): StyleCompileResults => ({
+          (result: Result | LazyResult): StyleCompileResults => ({
             code: result.css || '',
+            source,
             map: result.map && result.map.toJSON(),
             errors,
             rawResult: result,
@@ -104,6 +81,7 @@ export function doCompileStyle(
         .catch(
           (error: Error): StyleCompileResults => ({
             code: '',
+            source,
             map: undefined,
             errors: [...errors, error.message],
             rawResult: undefined,
@@ -119,10 +97,11 @@ export function doCompileStyle(
   }
 
   return {
-    code: code || ``,
+    code,
+    source,
+    rawResult: result,
     map: outMap && outMap.toJSON(),
     errors,
-    rawResult: result,
   };
 }
 

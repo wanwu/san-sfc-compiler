@@ -1,14 +1,4 @@
-/**
- * Copyright (c) Baidu Inc. All rights reserved.
- *
- * This source code is licensed under the MIT license.
- * See LICENSE file in the project root for license information.
- *
- * @file set-scope-id
- * @author wangjinghao <wangjinghao@baidu.com>
- */
-
-import selectorParser from 'postcss-selector-parser';
+const selectorParser = require('postcss-selector-parser');
 
 export default function (scopeId: string) {
   const keyframes: any = {};
@@ -18,6 +8,7 @@ export default function (scopeId: string) {
     if (!node.selector) {
       if (node.type === 'atrule') {
         // 媒体查询 https://astexplorer.net/#/2uBU1BLuJ1
+        // 还有一些不常用的语法，不过这里不考虑
         if (node.name === 'media') {
           node.each(rewriteSelector);
         } else if (/-?keyframes$/.test(node.name)) {
