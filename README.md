@@ -141,8 +141,11 @@ const result = compileStyle({
 
 ```ts
 {
-    code: '<div><img src="require(../images/profile.png);"></div>',
-    source: '<div><img src="../images/profile.png" /></div>'
+  code: '.color[test] {\n  color: #ff0000;\n}\n' // 转换后的代码,
+  source: '.color {\n  color: #ff0000;\n}\n' // 源码,
+  rawResult: LazyResult // postcss 异步结果,
+  map: outMap && outMap.toJSON() // 经过两步转换的 sourcemap,
+  errors,
 }
 ```
 
