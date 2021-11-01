@@ -26,9 +26,10 @@
   "license": "MIT",
   "scripts": {
     "lint": "prettier --write \"{src,test}/**/*.ts\"",
-    "clean": "rm -rf dist",
-    "build": "npm run clean && tsc",
-    "test": "jest test/"
+    "clean": "rm -rf dist && rm -rf coverage",
+    "build": "npm run clean && npm run lint && tsc",
+    "test": "jest",
+    "prepublishOnly": "npm run test && npm run build"
   },
   "jest": {
     "testURL": "http://localhost",

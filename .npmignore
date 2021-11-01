@@ -9,3 +9,4 @@ tsconfig.json
 .github/**
 typings
 coverage
+dist
