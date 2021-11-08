@@ -10,6 +10,7 @@ import {
 
 import { processors } from './style/preprocess';
 import scopedPlugin from './style/scoped';
+import cssModulesPlugin from 'postcss-modules-sync';
 
 export function compileStyle(
   options: StyleCompileOptions
@@ -30,6 +31,7 @@ export function doCompileStyle(
     filename,
     id = '',
     scoped = false,
+    modules = false,
     preprocessLang,
     postcssOptions,
     postcssPlugins,
@@ -43,6 +45,10 @@ export function doCompileStyle(
 
   if (scoped) {
     plugins.push(scopedPlugin(id));
+  }
+
+  if (modules) {
+    plugins.push(cssModulesPlugin());
   }
 
   const postCSSOptions: ProcessOptions = {

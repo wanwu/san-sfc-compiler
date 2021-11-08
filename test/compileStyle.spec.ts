@@ -56,3 +56,26 @@ test('preprocess sass', () => {
 
   expect(result.map).toBeTruthy();
 });
+
+test('css modules', () => {
+  const style = parseSFC({
+    source: `<style module>.red { color: red; }\ndiv { font-size: 20px }</style>`,
+    filename: 'test.san',
+  }).styles[0] as any;
+
+  const result = compileStyle({
+    id: 'test',
+    filename: 'test.san',
+    source: style.content,
+    scoped: false,
+    modules: true,
+    map: style.map,
+    preprocessLang: style.lang,
+  });
+
+  expect(result.code).toEqual(expect.stringContaining('color: red;'));
+
+  expect(result.code).toEqual(expect.stringContaining('.red_'));
+
+  expect(result.map).toBeTruthy();
+});

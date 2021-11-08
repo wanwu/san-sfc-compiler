@@ -131,6 +131,7 @@ const result = compileStyle({
 | filename          | 文件名                                  | string  |
 | id                | 添加 scoped css id                      | string  |
 | scoped            | scoped css 开关                         | boolean |
+| modules           | css modules 开关                        | boolean |
 | preprocessLang    | 预处理语言，less sass 等                | string  |
 | preprocessOptions | 预处理的选项，传递给预处理器            | object  |
 | postcssOptions    | postcss 的选项，直接传递给它            | object  |

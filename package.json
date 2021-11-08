@@ -1,6 +1,6 @@
 {
   "name": "san-sfc-compiler",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Lower level utilities for compiling .san single file components",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -60,6 +60,7 @@
     "lodash.mapvalues": "^4.6.0",
     "merge-source-map": "^1.1.0",
     "postcss": "^8.3.11",
+    "postcss-modules-sync": "^1.0.0",
     "postcss-selector-parser": "^6.0.6",
     "pug": "^3.0.2",
     "san-anode-utils": "^3.10.0",

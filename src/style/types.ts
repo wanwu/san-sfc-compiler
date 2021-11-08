@@ -7,6 +7,7 @@ export interface StyleCompileOptions {
   id?: string;
   map?: any;
   scoped?: boolean;
+  modules?: boolean;
   preprocessLang?: string;
   preprocessOptions?: any;
   postcssOptions?: ProcessOptions;
