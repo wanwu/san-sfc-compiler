@@ -24,6 +24,7 @@ export interface StyleCompileResults {
   source: string;
   rawResult: LazyResult | Result | void;
   errors: string[];
+  cssHashMap?: any;
 }
 
 export interface StylePreprocessor {

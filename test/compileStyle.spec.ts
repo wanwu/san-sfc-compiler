@@ -78,4 +78,6 @@ test('css modules', () => {
   expect(result.code).toEqual(expect.stringContaining('.red_'));
 
   expect(result.map).toBeTruthy();
+
+  expect(result.cssHashMap).toBeTruthy();
 });

@@ -47,8 +47,13 @@ export function doCompileStyle(
     plugins.push(scopedPlugin(id));
   }
 
+  let cssHashMap = {};
   if (modules) {
-    plugins.push(cssModulesPlugin());
+    plugins.push(
+      cssModulesPlugin({
+        getJSON: (tokens: any) => (cssHashMap = tokens),
+      })
+    );
   }
 
   const postCSSOptions: ProcessOptions = {
@@ -108,6 +113,7 @@ export function doCompileStyle(
     rawResult: result,
     map: outMap && outMap.toJSON(),
     errors,
+    cssHashMap,
   };
 }
 
