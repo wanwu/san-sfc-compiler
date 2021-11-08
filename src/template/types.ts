@@ -1,4 +1,4 @@
-import { RawSourceMap } from 'src/sourcemap';
+import { RawSourceMap } from '../sourcemap';
 
 export interface TemplateCompileOptions {
   source: string;
