@@ -8,6 +8,7 @@ test('get template block', () => {
   });
 
   expect(res.template?.content).toMatch('<div>ok</div>');
+  expect(res.filename).toBe('test.san');
 });
 
 test('get style block', () => {

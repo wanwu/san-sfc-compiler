@@ -62,7 +62,8 @@ export interface SFCDescriptor {
   template: SFCBlock | null;
   script: SFCBlock | null;
   styles: SFCBlock[];
-  customBlocks: SFCBlock[];
+  customBlocks?: SFCBlock[];
+  filename?: string;
 }
 
 export interface ParseOptions {
@@ -95,6 +96,8 @@ export function parseSFC(options: ParseOptions): SFCDescriptor {
       return value && addMap(new SFCBlock(value));
     }
   }) as SFCDescriptor;
+  // 返回 .san 文件名
+  output.filename = filename;
 
   return output;
 }
