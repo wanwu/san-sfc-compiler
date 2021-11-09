@@ -10,6 +10,7 @@ import {
 
 import { processors } from './style/preprocess';
 import scopedPlugin from './style/scoped';
+import mutePlugin from './style/mute';
 import cssModulesPlugin from 'postcss-modules-sync';
 
 export function compileStyle(
@@ -32,6 +33,7 @@ export function doCompileStyle(
     id = '',
     scoped = false,
     modules = false,
+    mute = true, // 去除 postcss 控制台信息
     preprocessLang,
     postcssOptions,
     postcssPlugins,
@@ -45,6 +47,10 @@ export function doCompileStyle(
 
   if (scoped) {
     plugins.push(scopedPlugin(id));
+  }
+
+  if (mute) {
+    plugins.push(mutePlugin);
   }
 
   let cssHashMap = {};

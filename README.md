@@ -132,6 +132,7 @@ const result = compileStyle({
 | id                | 添加 scoped css id                      | string  |
 | scoped            | scoped css 开关                         | boolean |
 | modules           | css modules 开关                        | boolean |
+| mute              | 去除 postcss 控制台信息，默认为 true    | boolean |
 | preprocessLang    | 预处理语言，less sass 等                | string  |
 | preprocessOptions | 预处理的选项，传递给预处理器            | object  |
 | postcssOptions    | postcss 的选项，直接传递给它            | object  |
@@ -147,6 +148,7 @@ const result = compileStyle({
   rawResult: LazyResult // postcss 异步结果,
   map: outMap && outMap.toJSON() // 经过两步转换的 sourcemap,
   errors,
+  cssHashMap: {} // css modules 编译结果
 }
 ```
 
