@@ -48,6 +48,9 @@ export function compileTemplate(
   return {
     code,
     source,
-    map: {} as any,
+    map: {
+      version: 3,
+      mappings: '',
+    },
   };
 }

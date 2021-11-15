@@ -1,6 +1,5 @@
 import mapValues from 'lodash.mapvalues';
 import { parseComponent as _parseComponent, SFCBlockRaw } from './sfc-parser';
-import { equalsRecord } from './utils';
 
 // types
 export { Attribute } from './sfc-parser';
@@ -26,35 +25,11 @@ export class SFCBlock {
         [key]: {
           value: block[key],
           enumerable: true,
+          configurable: true,
+          writable: true,
         },
       });
     });
-  }
-
-  equals(block: SFCBlock): boolean {
-    if (this === block) {
-      return true;
-    }
-
-    return (
-      this.type === block.type &&
-      this.content === block.content &&
-      this.start === block.start &&
-      this.end === block.end &&
-      this.lang === block.lang &&
-      this.src === block.src &&
-      this.scoped === block.scoped &&
-      this.module === block.module &&
-      equalsRecord(this.attrs, block.attrs)
-    );
-  }
-
-  calcGlobalOffset(offset: number): number {
-    return this.start + offset;
-  }
-
-  calcGlobalRange(range: [number, number]): [number, number] {
-    return [this.calcGlobalOffset(range[0]), this.calcGlobalOffset(range[1])];
   }
 }
 
@@ -73,27 +48,41 @@ export interface ParseOptions {
   needMap?: boolean;
 }
 
+const lineComment = '\n';
+const addLineComment = (source: string, block: SFCBlock | null) => {
+  if (!block) return block;
+  const lines = source.substr(0, block.start).split(/\r?\n/g).length - 1;
+  block.content = lineComment.repeat(lines) + block.content;
+  return block;
+};
+
 export function parseSFC(options: ParseOptions): SFCDescriptor {
   const { source, filename = '', sourceRoot = '', needMap = true } = options;
 
-  const addMap = (block: SFCBlockRaw) => {
-    if (!block.src && needMap) {
-      block.map = generateSourceMap(
-        filename,
-        source,
-        block.content,
-        sourceRoot,
-        'line'
-      );
+  const addMap = (block: SFCBlockRaw | null) => {
+    if (!block) return block;
+    if (needMap) {
+      if (!block.src && block.type !== 'template' && needMap) {
+        block.map = generateSourceMap(
+          filename,
+          source,
+          block.content,
+          sourceRoot,
+          'line'
+        );
+      }
+      return block;
     }
-    return block;
   };
-
   const output = mapValues(_parseComponent(source), (value) => {
     if (Array.isArray(value)) {
-      return value.map((v) => new SFCBlock(v)).map((style) => addMap(style));
+      return value
+        .map((v) => new SFCBlock(v))
+        .map((v) => addLineComment(source, v))
+        .map((style) => addMap(style));
     } else {
-      return value && addMap(new SFCBlock(value));
+      const block = addLineComment(source, value);
+      return block && addMap(new SFCBlock(block));
     }
   }) as SFCDescriptor;
   // 返回 .san 文件名
