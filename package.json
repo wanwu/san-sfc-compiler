@@ -1,6 +1,6 @@
 {
   "name": "san-sfc-compiler",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Lower level utilities for compiling .san single file components",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
