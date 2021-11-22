@@ -76,10 +76,7 @@ export function parseSFC(options: ParseOptions): SFCDescriptor {
   };
   const output = mapValues(_parseComponent(source), (value) => {
     if (Array.isArray(value)) {
-      return value
-        .map((v) => new SFCBlock(v))
-        .map((v) => addLineComment(source, v))
-        .map((style) => addMap(style));
+      return value.map((v) => new SFCBlock(v)).map((style) => addMap(style));
     } else {
       const block = addLineComment(source, value);
       return block && addMap(new SFCBlock(block));
